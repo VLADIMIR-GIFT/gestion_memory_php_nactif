@@ -17,20 +17,20 @@
         <ul class="navbar-nav">
             <?php if (isset($_SESSION['user_id'])): ?>
                 <li class="nav-item active">
-                    <a class="nav-link" href="views/etudiant/dashboard.php">Tableau de Bord <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="../etudiant/dashboard.php">Tableau de Bord <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="views/auth/logout.php">Se déconnecter</a>
+                    <a class="nav-link" href="../auth/logout.php">Se déconnecter</a>
                 </li>
             <?php else: ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="views/auth/login.php">Se connecter</a>
+                    <a class="nav-link" href="../auth/login.php">Se connecter</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="views/auth/register.php">S'inscrire</a>
+                    <a class="nav-link" href="../auth/register.php">S'inscrire</a>
                 </li>
             <?php endif; ?>
-            </ul>
+        </ul>
     </div>
 </nav>
 

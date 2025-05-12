@@ -71,7 +71,7 @@ $encadreur = $etudiant->encadreur_id ? Encadreur::getById($etudiant->encadreur_i
 
 <script>
 function envoyerRappel() {
-    fetch('../controllers/EtudiantController.php?action=rappel')
+    fetch('../../controllers/EtudiantController.php?action=rappel')
         .then(response => response.json())
         .then(data => {
             alert(data.message);

@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/views/layouts/header.php'; ?>
+<?php require_once __DIR__ . '/../layouts/footer.php'; ?>
 
 <div class="container">
     <h2>Uploader votre cahier des charges</h2>

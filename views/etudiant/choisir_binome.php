@@ -1,20 +1,35 @@
-<?php 
-require_once __DIR__ . '/../layouts/header.php';
-require_once __DIR__ . '/models/Etudiant.php';
+<?php
+session_start(); // Démarrez la session en premier
 
-$etudiants = Etudiant::getAllExcept($_SESSION['user_id']);
+require_once __DIR__ . '/../../models/Etudiant.php';
+require_once __DIR__ . '/../../models/Binome.php';
+require_once __DIR__ . '/../layouts/header.php';
+
+$etudiantConnecteId = $_SESSION['user_id'] ?? null;
+if (!$etudiantConnecteId) {
+    echo "<div class='alert alert-danger'>Vous n'êtes pas connecté.</div>";
+    exit;
+}
+$etudiantConnecte = Etudiant::getById($etudiantConnecteId);
+if (!$etudiantConnecte) {
+    echo "<div class='alert alert-danger'>Erreur : étudiant connecté non trouvé.</div>";
+    exit;
+}
+
+$etudiantsDisponibles = Etudiant::getAllExcept($etudiantConnecteId); // Méthode à créer dans le modèle Etudiant
 ?>
 
 <div class="container">
-    <h2>Choisir votre binôme</h2>
-    <form action="../controllers/BinomeController.php?action=demander" method="POST">
+    <h2>Choisir un binôme</h2>
+    <p>Sélectionnez l'étudiant avec qui vous souhaitez former un binôme :</p>
+
+    <form action="../../controllers/BinomeController.php?action=envoyer_demande" method="post">
         <div class="form-group">
-            <label>Sélectionnez un étudiant:</label>
-            <select name="binome_id" class="form-control" required>
-                <?php foreach ($etudiants as $e): ?>
-                    <option value="<?= $e->id ?>">
-                        <?= $e->prenom ?> <?= $e->nom ?> (<?= $e->specialite ?>)
-                    </option>
+            <label for="etudiant_cible_id">Étudiant :</label>
+            <select class="form-control" id="etudiant_cible_id" name="etudiant_cible_id" required>
+                <option value="">-- Sélectionner un étudiant --</option>
+                <?php foreach ($etudiantsDisponibles as $etudiant): ?>
+                    <option value="<?= $etudiant->id ?>"><?= $etudiant->prenom ?> <?= $etudiant->nom ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -22,4 +37,4 @@ $etudiants = Etudiant::getAllExcept($_SESSION['user_id']);
     </form>
 </div>
 
-<?php require_once __DIR__ . '/views/layouts/footer.php'; ?>
+<?php require_once __DIR__ . '/../layouts/footer.php'; ?>

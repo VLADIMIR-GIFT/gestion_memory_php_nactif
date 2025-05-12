@@ -37,6 +37,17 @@ class Etudiant {
             $stmt->execute([$this->nom, $this->prenom, $this->email, $this->password, $this->specialite, $this->theme, $this->pdf_path, $this->encadreur_id, $this->id]);
         }
     }
+
+     public static function getAllExcept($etudiantId) {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("SELECT * FROM etudiants WHERE id != ?");
+        $stmt->execute([$etudiantId]);
+        $etudiants = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $etudiants[] = new Etudiant($row['id'], $row['nom'], $row['prenom'], $row['email'], $row['password'], $row['specialite'], $row['theme'], $row['encadreur_id'], $row['binome_id'], $row['pdf_path']); // Ajustez les arguments du constructeur si nécessaire
+        }
+        return $etudiants;
+    }
     
     /**
      * Récupère un étudiant par son ID.
@@ -73,12 +84,6 @@ class Etudiant {
     /**
      * Récupère tous les étudiants sauf celui avec l'ID spécifié.
      */
-    public static function getAllExcept($id) {
-        $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM etudiants WHERE id != ?");
-        $stmt->execute([$id]);
-        $stmt->setFetchMode(PDO::FETCH_CLASS, 'Etudiant');
-        return $stmt->fetchAll();
-    }
+
 }
 ?>
